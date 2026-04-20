@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Plucky Lawn Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal-dark: #00557C;
+    --teal-mid: #5DB0D0;
+    --peach: #FFCAB1;
+    --green-dark: #659157;
+    --green-light: #A1C084;
+    --cream: #FDFAF5;
+    --text-dark: #1a2e1a;
+    --text-mid: #3d5240;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text-dark); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 4vw;
+    background: rgba(253,250,245,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(101,145,87,0.15);
+    transition: box-shadow 0.3s;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--teal-dark); letter-spacing: 0.01em; }
+  .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--text-mid); font-size: 0.9rem; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--teal-dark); }
+  .btn-nav {
+    background: var(--green-dark); color: #fff; border: none; border-radius: 100px;
+    padding: 0.55rem 1.4rem; font-size: 0.875rem; font-family: 'DM Sans', sans-serif;
+    font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.15s;
+    text-decoration: none;
+  }
+  .btn-nav:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding: 7rem 4vw 4rem;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80');
+    background-size: cover; background-position: center 40%;
+    filter: brightness(0.45) saturate(0.8);
+  }
+  .hero-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(135deg, rgba(0,85,124,0.55) 0%, rgba(101,145,87,0.35) 100%);
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 700px; }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(255,202,177,0.2); border: 1px solid rgba(255,202,177,0.5);
+    color: var(--peach); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 100px; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.1; color: #fff; margin-bottom: 1.25rem; font-weight: 700;
+  }
+  .hero h1 em { font-style: italic; color: var(--peach); }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.8); line-height: 1.7; max-width: 520px; margin-bottom: 2.5rem; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--peach); color: var(--text-dark); border: none; border-radius: 100px;
+    padding: 0.9rem 2rem; font-size: 1rem; font-family: 'DM Sans', sans-serif;
+    font-weight: 500; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,202,177,0.4); }
+  .btn-ghost {
+    background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.5);
+    border-radius: 100px; padding: 0.9rem 2rem; font-size: 1rem;
+    font-family: 'DM Sans', sans-serif; font-weight: 400; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s; text-decoration: none; display: inline-block;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.8); }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  }
+  .hero-scroll span { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .scroll-line {
+    width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+  /* SERVICES */
+  .section { padding: 6rem 4vw; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--green-dark); margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15;
+    color: var(--teal-dark); margin-bottom: 1rem;
+  }
+  .section-subtitle { font-size: 1.05rem; color: var(--text-mid); line-height: 1.7; max-width: 540px; margin-bottom: 3.5rem; }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;
+  }
+  .service-card {
+    background: #fff; border-radius: 20px; padding: 2rem;
+    border: 1px solid rgba(161,192,132,0.25);
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; right: 0;
+    width: 80px; height: 80px; border-radius: 0 20px 0 80px;
+    transition: all 0.3s;
+  }
+  .service-card:nth-child(1)::before { background: rgba(93,176,208,0.12); }
+  .service-card:nth-child(2)::before { background: rgba(255,202,177,0.25); }
+  .service-card:nth-child(3)::before { background: rgba(161,192,132,0.2); }
+  .service-card:nth-child(4)::before { background: rgba(0,85,124,0.08); }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,85,124,0.1); }
+  .service-icon {
+    width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.25rem; font-size: 1.5rem;
+  }
+  .service-card:nth-child(1) .service-icon { background: rgba(93,176,208,0.15); }
+  .service-card:nth-child(2) .service-icon { background: rgba(255,202,177,0.4); }
+  .service-card:nth-child(3) .service-icon { background: rgba(161,192,132,0.3); }
+  .service-card:nth-child(4) .service-icon { background: rgba(0,85,124,0.1); }
+  .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 0.6rem; color: var(--teal-dark); }
+  .service-card p { font-size: 0.9rem; color: var(--text-mid); line-height: 1.65; }
+  .service-price { margin-top: 1.25rem; font-size: 0.85rem; font-weight: 500; color: var(--green-dark); }
+
+  /* ABOUT */
+  .about { background: var(--teal-dark); padding: 6rem 4vw; }
+  .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; max-width: 1100px; margin: 0 auto; }
+  .about-img-wrap { position: relative; }
+  .about-img {
+    width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 24px;
+    display: block;
+  }
+  .about-badge {
+    position: absolute; bottom: -1.5rem; right: -1.5rem;
+    background: var(--peach); border-radius: 20px; padding: 1.25rem 1.5rem;
+    text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  .about-badge strong { display: block; font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--teal-dark); }
+  .about-badge span { font-size: 0.8rem; color: var(--text-dark); font-weight: 400; }
+  .about-content .section-label { color: var(--teal-mid); }
+  .about-content .section-title { color: #fff; }
+  .about-content p { color: rgba(255,255,255,0.75); line-height: 1.75; font-size: 1rem; margin-bottom: 1.25rem; }
+  .about-values { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+  .about-value { display: flex; align-items: center; gap: 0.6rem; color: rgba(255,255,255,0.85); font-size: 0.9rem; }
+  .about-value::before { content: ''; display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; }
+
+  /* TESTIMONIALS */
+  .testimonials-bg { background: #f0f4eb; padding: 6rem 4vw; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .testimonial-card {
+    background: #fff; border-radius: 20px; padding: 2rem;
+    border: 1px solid rgba(161,192,132,0.2);
+    transition: transform 0.2s;
+  }
+  .testimonial-card:hover { transform: translateY(-3px); }
+  .stars { color: #f5a623; font-size: 1rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+  .testimonial-card blockquote {
+    font-size: 0.95rem; line-height: 1.7; color: var(--text-mid);
+    font-style: italic; margin-bottom: 1.5rem;
+    font-family: 'Playfair Display', serif;
+  }
+  .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+  .author-avatar {
+    width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+  }
+  .author-name { font-weight: 500; font-size: 0.9rem; color: var(--teal-dark); }
+  .author-loc { font-size: 0.78rem; color: var(--text-mid); }
+
+  /* CTA BAND */
+  .cta-band {
+    background: var(--green-dark); padding: 5rem 4vw; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-band::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(161,192,132,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(0,85,124,0.3) 0%, transparent 60%);
+  }
+  .cta-band > * { position: relative; z-index: 1; }
+  .cta-band h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); color: #fff; margin-bottom: 1rem; }
+  .cta-band p { color: rgba(255,255,255,0.75); font-size: 1.05rem; max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.7; }
+  .btn-cta {
+    background: var(--peach); color: var(--text-dark); border: none; border-radius: 100px;
+    padding: 1rem 2.5rem; font-size: 1.05rem; font-family: 'DM Sans', sans-serif;
+    font-weight: 500; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+
+  /* FOOTER */
+  footer { background: #0f2010; padding: 3.5rem 4vw 2rem; }
+  .footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; max-width: 1100px; margin: 0 auto 2.5rem; }
+  .footer-brand .nav-logo-text { color: var(--green-light); font-size: 1.3rem; }
+  .footer-brand p { color: rgba(255,255,255,0.45); font-size: 0.875rem; line-height: 1.7; margin-top: 0.75rem; max-width: 280px; }
+  .footer-contact { margin-top: 1.25rem; }
+  .footer-contact a, .footer-contact p {
+    display: block; color: rgba(255,255,255,0.6); font-size: 0.875rem;
+    text-decoration: none; margin-bottom: 0.4rem; transition: color 0.2s;
+  }
+  .footer-contact a:hover { color: var(--peach); }
+  .footer-col h4 { color: rgba(255,255,255,0.9); font-size: 0.875rem; font-weight: 500; margin-bottom: 1rem; letter-spacing: 0.04em; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.5rem; }
+  .footer-col ul li a { color: rgba(255,255,255,0.5); font-size: 0.875rem; text-decoration: none; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--peach); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem; text-align: center; color: rgba(255,255,255,0.3); font-size: 0.8rem; max-width: 1100px; margin: 0 auto; }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-badge { right: 1rem; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Hand-drawn style sprout tending logo -->
+      <g stroke="#659157" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <!-- Soil mound -->
+        <path d="M8 28 Q18 23 28 28" stroke-width="2.2"/>
+        <!-- Stem with slight wobble -->
+        <path d="M18 28 Q17.5 24 18.2 20 Q18.6 17 18 13" stroke-width="2"/>
+        <!-- Left leaf -->
+        <path d="M18 18 Q13 15 11 11 Q14 12 17 16" stroke-width="1.8"/>
+        <!-- Right leaf -->
+        <path d="M18 15 Q23 12 25 8 Q22 10 18.5 14" stroke-width="1.8"/>
+        <!-- Small sprout tip -->
+        <path d="M18 13 Q17 10 18 8 Q19 10 18 13" stroke-width="1.6"/>
+        <!-- Hand - thumb and forefinger pinching -->
+        <path d="M24 22 Q26 20 27.5 19 Q29 18 30 17.5" stroke-width="1.9"/>
+        <path d="M25.5 23.5 Q27 22.5 28.5 22 Q30 21.5 31 21" stroke-width="1.9"/>
+        <!-- Fingertips meeting -->
+        <path d="M30 17.5 Q31.5 19 31 21" stroke-width="1.7"/>
+        <!-- Wrist / palm suggestion -->
+        <path d="M23 24 Q23.5 25.5 24.5 26" stroke-width="1.6"/>
+      </g>
+    </svg>
+    <span class="nav-logo-text">Plucky Lawn Care</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#contact" class="btn-nav">Get a Free Quote</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Serving the Greater Decatur Area</span>
+    <h1>Your lawn,<br/><em>lovingly</em> tended.</h1>
+    <p>From first mow to full seasonal care, Plucky Lawn Care brings attentive, hands-on expertise to every yard we touch. No rush jobs. No shortcuts. Just honest, beautiful work.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Get a Free Quote</a>
+      <a href="#services" class="btn-ghost">See Our Services</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="section-label reveal">What we do</div>
+  <h2 class="section-title reveal">Lawn care done right,<br/>every single time.</h2>
+  <p class="section-subtitle reveal">We offer a full suite of outdoor maintenance services tailored to the rhythm of Georgia's seasons — and your personal preferences.</p>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">🌿</div>
+      <h3>Lawn Mowing & Edging</h3>
+      <p>Precise cuts, clean edges, and a thorough cleanup after every visit. We mow at the ideal height for your grass type and the season.</p>
+      <p class="service-price">Starting at $45/visit</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🌱</div>
+      <h3>Fertilization & Weed Control</h3>
+      <p>A custom feeding program that keeps your lawn lush and thick, while targeted treatments crowd out weeds before they take hold.</p>
+      <p class="service-price">Starting at $80/treatment</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">✂️</div>
+      <h3>Hedge & Shrub Trimming</h3>
+      <p>From formal boxwood topiaries to natural privacy hedges, we shape and maintain your plantings with a careful eye and steady hand.</p>
+      <p class="service-price">Starting at $60/visit</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🍂</div>
+      <h3>Seasonal Cleanup</h3>
+      <p>Spring and fall cleanups that clear debris, aerate compacted soil, and set your lawn up for a season of healthy, vigorous growth.</p>
+      <p class="service-price">Starting at $120/cleanup</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-img-wrap reveal">
+      <img
+        src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80"
+        alt="Plucky Lawn Care founder tending a garden"
+        class="about-img"
+      />
+      <div class="about-badge">
+        <strong>12+</strong>
+        <span>Years of<br/>Experience</span>
+      </div>
+    </div>
+    <div class="about-content">
+      <div class="section-label reveal">Our story</div>
+      <h2 class="section-title reveal">Small company.<br/>Big care.</h2>
+      <p class="reveal">Plucky Lawn Care was founded right here in Decatur by Marcus and Ellie Webb — a husband-and-wife team who got tired of watching neighbors deal with unreliable, impersonal lawn services. We started with a single truck, a few good tools, and a lot of patience.</p>
+      <p class="reveal">Today we serve over 150 residential and small commercial clients across Decatur, Avondale Estates, and Stone Mountain. Every job still gets our personal attention — because to us, your yard isn't a ticket number, it's someone's home.</p>
+      <div class="about-values reveal">
+        <div class="about-value">Locally owned & operated</div>
+        <div class="about-value">Fully licensed & insured</div>
+        <div class="about-value">Eco-friendly practices</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-bg" id="testimonials">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-label reveal">Happy customers</div>
+    <h2 class="section-title reveal">What our neighbors say.</h2>
+    <p class="section-subtitle reveal">Don't just take our word for it — here's what a few of our clients have to say about the Plucky difference.</p>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Marcus and his crew transformed our backyard from a scrubby mess into something we're actually proud of. Consistent, communicative, and genuinely great people."</blockquote>
+        <div class="testimonial-author">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80&fit=crop&crop=faces" alt="James Okafor" class="author-avatar"/>
+          <div>
+            <div class="author-name">James Okafor</div>
+            <div class="author-loc">Decatur, GA</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote>"I've tried three other lawn services and nobody compares to Plucky. They show up when they say they will, do exactly what they promise, and my lawn has never looked better."</blockquote>
+        <div class="testimonial-author">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80&fit=crop&crop=faces" alt="Patricia Nguyen" class="author-avatar"/>
+          <div>
+            <div class="author-name">Patricia Nguyen</div>
+            <div class="author-loc">Avondale Estates, GA</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote>"We've been with Plucky for four years. Ellie remembers every little detail about our yard — what the dogs are sensitive to, which beds to skip. That personal touch means everything."</blockquote>
+        <div class="testimonial-author">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80&fit=crop&crop=faces" alt="Derek and Sam Hollis" class="author-avatar"/>
+          <div>
+            <div class="author-name">Derek & Sam Hollis</div>
+            <div class="author-loc">Stone Mountain, GA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band" id="contact">
+  <h2>Ready for a lawn you'll love?</h2>
+  <p>Get in touch for a free, no-pressure quote. We'll walk your property with you and put together a plan that fits your yard and your budget.</p>
+  <a href="tel:+14045550192" class="btn-cta">Call Us: (404) 555-0192</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+        <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#A1C084" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <path d="M8 28 Q18 23 28 28" stroke-width="2.2"/>
+            <path d="M18 28 Q17.5 24 18.2 20 Q18.6 17 18 13" stroke-width="2"/>
+            <path d="M18 18 Q13 15 11 11 Q14 12 17 16" stroke-width="1.8"/>
+            <path d="M18 15 Q23 12 25 8 Q22 10 18.5 14" stroke-width="1.8"/>
+            <path d="M18 13 Q17 10 18 8 Q19 10 18 13" stroke-width="1.6"/>
+            <path d="M24 22 Q26 20 27.5 19 Q29 18 30 17.5" stroke-width="1.9"/>
+            <path d="M25.5 23.5 Q27 22.5 28.5 22 Q30 21.5 31 21" stroke-width="1.9"/>
+            <path d="M30 17.5 Q31.5 19 31 21" stroke-width="1.7"/>
+            <path d="M23 24 Q23.5 25.5 24.5 26" stroke-width="1.6"/>
+          </g>
+        </svg>
+        <span class="nav-logo-text">Plucky Lawn Care</span>
+      </a>
+      <p>Honest, attentive lawn care for Decatur and the surrounding communities. Family-owned since 2012.</p>
+      <div class="footer-contact">
+        <a href="tel:+14045550192">📞 (404) 555-0192</a>
+        <p>📍 218 Sycamore Street, Decatur, GA 30030</p>
+        <a href="mailto:hello@pluckylawncare.com">✉️ hello@pluckylawncare.com</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Lawn Mowing & Edging</a></li>
+        <li><a href="#services">Fertilization</a></li>
+        <li><a href="#services">Weed Control</a></li>
+        <li><a href="#services">Hedge Trimming</a></li>
+        <li><a href="#services">Seasonal Cleanup</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Get a Quote</a></li>
+        <li><a href="#">Service Areas</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 Plucky Lawn Care LLC · 218 Sycamore Street, Decatur, GA 30030 · (404) 555-0192 · All rights reserved.
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.boxShadow =
+      window.scrollY > 40 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
+  });
+</script>
+</body>
+</html>
